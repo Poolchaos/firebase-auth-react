@@ -4,6 +4,7 @@ const config: Config.InitialOptions = {
   testEnvironment: 'jsdom',
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.ts?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFiles: ['<rootDir>/src/tests/jest.setup.ts'],
@@ -12,7 +13,7 @@ const config: Config.InitialOptions = {
   preset: 'ts-jest',
   moduleNameMapper: {
     '\\.(css|scss)$': '<rootDir>/__mocks__/styleMock.js',
-  }
+  },
 };
 
 export default config;

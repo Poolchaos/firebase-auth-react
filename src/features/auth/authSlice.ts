@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch } from '../../store';
+import {
+  login,
+  signup,
+  logout as firebaseLogout,
+} from '../../services/authService';
 
 interface User {
   id: string;
-  email: string;
+  email: string | null;
 }
 
 interface AuthState {
@@ -66,4 +72,56 @@ const authSlice = createSlice({
 
 export const { loginSuccess, loginFailure, logout, setLoading, setError } =
   authSlice.actions;
+
+export const authenticateUser =
+  (email: string, password: string) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
+      const userCredential = await login(email, password);
+      const user = userCredential.user;
+      const token = await user.getIdToken();
+      dispatch(
+        loginSuccess({ user: { id: user.uid, email: user.email }, token }),
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        dispatch(loginFailure({ error: error.message }));
+      } else {
+        dispatch(loginFailure({ error: 'An unknown error occurred' }));
+      }
+    }
+  };
+
+export const signupUser =
+  (email: string, password: string) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
+      const userCredential = await signup(email, password);
+      const user = userCredential.user;
+      const token = await user.getIdToken();
+      dispatch(
+        loginSuccess({ user: { id: user.uid, email: user.email }, token }),
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        dispatch(loginFailure({ error: error.message }));
+      } else {
+        dispatch(loginFailure({ error: 'An unknown error occurred' }));
+      }
+    }
+  };
+
+export const logoutUser = () => async (dispatch: AppDispatch) => {
+  try {
+    await firebaseLogout();
+    dispatch(logout());
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      dispatch(setError(error.message));
+    } else {
+      dispatch(setError('An unknown error occurred'));
+    }
+  }
+};
+
 export default authSlice.reducer;

@@ -13,9 +13,12 @@ global.fetch = jest.fn(
 
 const mockImportMeta = {
   env: {
-    VITE_WEATHERBIT_API_URL: 'mocked-url',
-    VITE_WEATHERBIT_API_KEY: 'mocked-api-key',
-    VITE_SENTRY_URL: 'mocked-sentry-url',
+    VITE_FIREBASE_API_KEY: 'mocked-firebase-api-key',
+    VITE_FIREBASE_AUTH_DOMAIN: 'mocked-firebase-auth-domain',
+    VITE_FIREBASE_PROJECT_ID: 'mocked-firestore-project-id',
+    VITE_FIREBASE_STORAGE_BUCKET: 'mocked-storage-bucket',
+    VITE_FIREBASE_MESSAGING_SENDER_ID: 'mocked-sender-id',
+    VITE_FIREBASE_APP_ID: 'mocked-app-id',
   },
 };
 
