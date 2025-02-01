@@ -1,8 +1,8 @@
-import { Route, Routes, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Welcome from "./pages/Welcome";
-import Profile from "./pages/Profile";
+import { Route, Routes, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Welcome from './pages/Welcome';
+import Profile from './pages/Profile';
 
 const AppRoutes: React.FC = () => {
   return (

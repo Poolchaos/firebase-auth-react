@@ -1,4 +1,4 @@
-import { TextEncoder, TextDecoder } from "util";
+import { TextEncoder, TextDecoder } from 'util';
 
 Object.assign(global, { TextDecoder, TextEncoder });
 
@@ -13,13 +13,13 @@ global.fetch = jest.fn(
 
 const mockImportMeta = {
   env: {
-    VITE_WEATHERBIT_API_URL: "mocked-url",
-    VITE_WEATHERBIT_API_KEY: "mocked-api-key",
-    VITE_SENTRY_URL: "mocked-sentry-url",
+    VITE_WEATHERBIT_API_URL: 'mocked-url',
+    VITE_WEATHERBIT_API_KEY: 'mocked-api-key',
+    VITE_SENTRY_URL: 'mocked-sentry-url',
   },
 };
 
-Object.defineProperty(global, "import", {
+Object.defineProperty(global, 'import', {
   get() {
     return { meta: mockImportMeta };
   },
