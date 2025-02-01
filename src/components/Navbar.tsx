@@ -5,6 +5,7 @@ import { logout } from '../features/auth/authSlice';
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
+
   const isAuthenticated = useSelector<RootState, boolean>(
     (state: RootState) => state.auth.isAuthenticated,
   );
@@ -15,8 +16,10 @@ const Navbar: React.FC = () => {
         <Link to="/" className="mr-4">
           Home
         </Link>
+
         {isAuthenticated && <Link to="/profile">Profile</Link>}
       </div>
+
       {isAuthenticated ? (
         <button
           onClick={() => dispatch(logout())}
@@ -29,6 +32,7 @@ const Navbar: React.FC = () => {
           <Link to="/login" className="bg-blue-500 px-4 py-2 rounded mr-2">
             Login
           </Link>
+
           <Link to="/signup" className="bg-green-500 px-4 py-2 rounded">
             Signup
           </Link>
