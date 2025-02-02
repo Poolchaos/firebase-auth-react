@@ -7,6 +7,7 @@ import authReducer, {
   authenticateUser,
   signupUser,
   logoutUser,
+  signupSuccess,
 } from '../features/auth/authSlice';
 import {
   login,
@@ -131,13 +132,7 @@ describe('authSlice', () => {
       await signupUser('test@example.com', 'password')(dispatch);
 
       expect(dispatch).toHaveBeenCalledWith(setLoading(true));
-      expect(dispatch).toHaveBeenCalledWith(
-        loginSuccess({
-          user: { id: '1', email: 'test@example.com' },
-          token: 'test-token',
-        }),
-      );
-      expect(mockUser.getIdToken).toHaveBeenCalled();
+      expect(dispatch).toHaveBeenCalledWith(signupSuccess());
     });
 
     it('should handle signupUser error', async () => {

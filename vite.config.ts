@@ -3,14 +3,12 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import EnvironmentPlugin from 'vite-plugin-environment';
-import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     EnvironmentPlugin('all'),
-    tailwindcss(),
     ViteImageOptimizer({
       webp: {
         quality: 75,

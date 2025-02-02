@@ -12,9 +12,9 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <nav className="p-4 bg-gray-800 text-white flex justify-between">
+    <nav className="p-4 bg-gray-800 flex justify-between">
       <div>
-        <Link to="/" className="mr-4">
+        <Link to="/" className="text-white mr-4">
           Home
         </Link>
 
@@ -24,20 +24,20 @@ const Navbar: React.FC = () => {
       {isAuthenticated ? (
         <button
           onClick={() => dispatch(logout())}
-          className="bg-red-500 px-4 py-2 rounded"
+          className="bg-white text-black px-4 py-2 rounded"
         >
           Logout
         </button>
       ) : (
-        <>
-          <Link to="/login" className="bg-blue-500 px-4 py-2 rounded mr-2">
+        <div>
+          <Link to="/login" className="bg-white px-4 py-2 rounded mr-2">
             Login
           </Link>
 
-          <Link to="/signup" className="bg-green-500 px-4 py-2 rounded">
+          <Link to="/signup" className="bg-white px-4 py-2 rounded mx-2">
             Signup
           </Link>
-        </>
+        </div>
       )}
     </nav>
   );

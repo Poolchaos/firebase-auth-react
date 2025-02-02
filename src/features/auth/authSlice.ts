@@ -9,6 +9,7 @@ import {
 interface User {
   id: string;
   email: string | null;
+  name?: string | null;
 }
 
 interface AuthState {
@@ -47,6 +48,13 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    signupSuccess: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.token = null;
+      state.loading = false;
+      state.error = null;
+    },
     loginFailure: (state, action: PayloadAction<LoginFailurePayload>) => {
       state.isAuthenticated = false;
       state.user = null;
@@ -70,8 +78,14 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, loginFailure, logout, setLoading, setError } =
-  authSlice.actions;
+export const {
+  loginSuccess,
+  signupSuccess,
+  loginFailure,
+  logout,
+  setLoading,
+  setError,
+} = authSlice.actions;
 
 export const authenticateUser =
   (email: string, password: string) => async (dispatch: AppDispatch) => {
@@ -96,12 +110,9 @@ export const signupUser =
   (email: string, password: string) => async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
-      const userCredential = await signup(email, password);
-      const user = userCredential.user;
-      const token = await user.getIdToken();
-      dispatch(
-        loginSuccess({ user: { id: user.uid, email: user.email }, token }),
-      );
+      await signup(email, password);
+
+      dispatch(signupSuccess());
     } catch (error: unknown) {
       if (error instanceof Error) {
         dispatch(loginFailure({ error: error.message }));
