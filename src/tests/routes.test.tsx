@@ -31,7 +31,7 @@ describe('Routing Tests', () => {
     expect(screen.getByText('Signup')).toBeInTheDocument();
   });
 
-  test('navigates to Welcome page', () => {
+  test('navigates to Home page', () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
@@ -39,7 +39,9 @@ describe('Routing Tests', () => {
         </MemoryRouter>
       </Provider>,
     );
-    expect(screen.getByText('Welcome Page')).toBeInTheDocument();
+    expect(
+      screen.getByText('Welcome to my small authentication app'),
+    ).toBeInTheDocument();
   });
 
   test('navigates to Profile page', async () => {

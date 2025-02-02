@@ -1,3 +1,4 @@
+import { logout, setError } from '../features/auth/authSlice';
 import { auth } from '../firebaseConfig';
 import {
   createUserWithEmailAndPassword,
@@ -6,6 +7,7 @@ import {
   updateProfile,
   updatePassword as firebaseUpdatePassword,
 } from 'firebase/auth';
+import { AppDispatch } from '../store';
 
 export const signup = async (
   email: string,
@@ -60,14 +62,15 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const logout = async () => {
+export const logoutUser = () => async (dispatch: AppDispatch) => {
   try {
     await signOut(auth);
-  } catch (error) {
+    dispatch(logout());
+  } catch (error: unknown) {
     if (error instanceof Error) {
-      throw new Error(error.message);
+      dispatch(setError(error.message));
     } else {
-      throw new Error('An unknown error occurred');
+      dispatch(setError('An unknown error occurred'));
     }
   }
 };

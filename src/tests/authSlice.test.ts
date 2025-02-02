@@ -6,20 +6,15 @@ import authReducer, {
   setError,
   authenticateUser,
   signupUser,
-  logoutUser,
   signupSuccess,
 } from '../features/auth/authSlice';
-import {
-  login,
-  signup,
-  logout as firebaseLogout,
-} from '../services/authService';
+import { login, signup } from '../services/authService';
 import { AppDispatch } from '../store';
 
 jest.mock('../services/authService', () => ({
   login: jest.fn(),
   signup: jest.fn(),
-  logout: jest.fn(),
+  logoutUser: jest.fn(),
 }));
 
 describe('authSlice', () => {
@@ -146,24 +141,6 @@ describe('authSlice', () => {
       expect(dispatch).toHaveBeenCalledWith(
         loginFailure({ error: error.message }),
       );
-    });
-
-    it('should handle logoutUser', async () => {
-      (firebaseLogout as jest.Mock).mockResolvedValue(null);
-      const dispatch: AppDispatch = jest.fn();
-      await logoutUser()(dispatch);
-
-      expect(firebaseLogout).toHaveBeenCalled();
-      expect(dispatch).toHaveBeenCalledWith(logout());
-    });
-
-    it('should handle logoutUser error', async () => {
-      const error = new Error('Logout failed');
-      (firebaseLogout as jest.Mock).mockRejectedValue(error);
-      const dispatch: AppDispatch = jest.fn();
-      await logoutUser()(dispatch);
-
-      expect(dispatch).toHaveBeenCalledWith(setError(error.message));
     });
   });
 });

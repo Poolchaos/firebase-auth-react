@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { signOut } from 'firebase/auth';
 import { AppDispatch } from '../../store';
-import {
-  login,
-  signup,
-  logout as firebaseLogout,
-} from '../../services/authService';
+import { login, signup } from '../../services/authService';
+import { auth } from '../../firebaseConfig';
 
 interface User {
   id: string;
@@ -18,15 +16,10 @@ interface AuthState {
   token: string | null;
   loading: boolean;
   error: string | null;
-}
-
-interface LoginSuccessPayload {
-  user: User;
-  token: string;
-}
-
-interface LoginFailurePayload {
-  error: string;
+  _persist?: {
+    version: number;
+    rehydrated: boolean;
+  };
 }
 
 const initialState: AuthState = {
@@ -41,21 +34,24 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginSuccess: (state, action: PayloadAction<LoginSuccessPayload>) => {
+    signupSuccess: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.token = 'some-token';
+      state.loading = false;
+      state.error = null;
+    },
+    loginSuccess: (
+      state,
+      action: PayloadAction<{ user: User; token: string }>,
+    ) => {
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.loading = false;
       state.error = null;
     },
-    signupSuccess: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
-      state.token = null;
-      state.loading = false;
-      state.error = null;
-    },
-    loginFailure: (state, action: PayloadAction<LoginFailurePayload>) => {
+    loginFailure: (state, action: PayloadAction<{ error: string }>) => {
       state.isAuthenticated = false;
       state.user = null;
       state.token = null;
@@ -75,6 +71,13 @@ const authSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
+    setRehydratedState: (state, action: PayloadAction<AuthState>) => {
+      state.isAuthenticated = action.payload.isAuthenticated;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.loading = action.payload.loading;
+      state.error = action.payload.error;
+    },
   },
 });
 
@@ -85,6 +88,7 @@ export const {
   logout,
   setLoading,
   setError,
+  setRehydratedState,
 } = authSlice.actions;
 
 export const authenticateUser =
@@ -124,7 +128,7 @@ export const signupUser =
 
 export const logoutUser = () => async (dispatch: AppDispatch) => {
   try {
-    await firebaseLogout();
+    await signOut(auth);
     dispatch(logout());
   } catch (error: unknown) {
     if (error instanceof Error) {
