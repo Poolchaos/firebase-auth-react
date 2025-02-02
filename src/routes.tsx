@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import Home from './pages/Home';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -17,13 +18,14 @@ const App: React.FC = () => {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Home />} />
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/profile" /> : <Login />}
+          element={isAuthenticated ? <Navigate to="/welcome" /> : <Login />}
         />
         <Route path="/signup" element={<Signup />} />
         <Route element={<ProtectedRoute />}>
+          <Route path="/welcome" element={<Welcome />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>

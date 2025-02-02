@@ -72,7 +72,7 @@ const Login: React.FC = () => {
         }
       }
     } finally {
-      setIsLoading(false); // Stop loading after response
+      setIsLoading(false);
     }
   };
 

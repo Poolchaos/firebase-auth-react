@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  updatePassword as firebaseUpdatePassword,
 } from 'firebase/auth';
 
 export const signup = async (
@@ -62,6 +63,21 @@ export const login = async (email: string, password: string) => {
 export const logout = async () => {
   try {
     await signOut(auth);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error('An unknown error occurred');
+    }
+  }
+};
+
+export const updatePassword = async (newPassword: string) => {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error('No user is logged in');
+
+    await firebaseUpdatePassword(user, newPassword);
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
